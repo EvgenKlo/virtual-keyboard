@@ -1,0 +1,450 @@
+{
+  "Backquote": {
+    "class": "Backquote",
+    "english": "`",
+    "russian": "ё",
+    "shift-english": "~",
+    "shift-russian": "Ё"
+  },
+  "Digit1": {
+    "class": "Digit1",
+    "english": "1",
+    "russian": "1",
+    "shift-english": "!",
+    "shift-russian": "~"
+  },
+  "Digit2": {
+    "class": "Digit2",
+    "english": "2",
+    "russian": "2",
+    "shift-english": "@",
+    "shift-russian": "\""
+  },
+  "Digit3": {
+    "class": "Digit3",
+    "english": "3",
+    "russian": "3",
+    "shift-english": "#",
+    "shift-russian": "№"
+  },
+  "Digit4": {
+    "class": "Digit4",
+    "english": "4",
+    "russian": "4",
+    "shift-english": "$",
+    "shift-russian": ";"
+  },
+  "Digit5": {
+    "class": "Digit5",
+    "english": "5",
+    "russian": "5",
+    "shift-english": "%",
+    "shift-russian": "%"
+  },
+  "Digit6": {
+    "class": "Digit6",
+    "english": "6",
+    "russian": "6",
+    "shift-english": "^",
+    "shift-russian": ":"
+  },
+  "Digit7": {
+    "class": "Digit7",
+    "english": "7",
+    "russian": "7",
+    "shift-english": "&",
+    "shift-russian": "?"
+  },
+  "Digit8": {
+    "class": "Digit8",
+    "english": "8",
+    "russian": "8",
+    "shift-english": "*",
+    "shift-russian": "*"
+  },
+  "Digit9": {
+    "class": "Digit9",
+    "english": "9",
+    "russian": "9",
+    "shift-english": "(",
+    "shift-russian": "("
+  },
+  "Digit0": {
+    "class": "Digit0",
+    "english": "0",
+    "russian": "0",
+    "shift-english": ")",
+    "shift-russian": ")"
+  },
+  "Minus": {
+    "class": "Minus",
+    "english": "-",
+    "russian": "-",
+    "shift-english": "_",
+    "shift-russian": "_"
+  },
+  "Equal": {
+    "class": "Equal",
+    "english": "=",
+    "russian": "=",
+    "shift-english": "+",
+    "shift-russian": "+"
+  },
+  "Backspace": {
+    "class": "Backspace",
+    "english": "Backspace",
+    "russian": "Backspace",
+    "shift-english": "Backspace",
+    "shift-russian": "Backspace"
+  },
+  "Tab": {
+    "class": "Tab",
+    "english": "Tab",
+    "russian": "Tab",
+    "shift-english": "Tab",
+    "shift-russian": "Tab"
+  },
+  "KeyQ": {
+    "class": "KeyQ",
+    "english": "q",
+    "russian": "й",
+    "shift-english": "Q",
+    "shift-russian": "Й"
+  },
+  "KeyW": {
+    "class": "KeyW",
+    "english": "w",
+    "russian": "ц",
+    "shift-english": "W",
+    "shift-russian": "Ц"
+  },
+  "KeyE": {
+    "class": "KeyE",
+    "english": "e",
+    "russian": "у",
+    "shift-english": "E",
+    "shift-russian": "у"
+  },
+  "KeyR": {
+    "class": "KeyR",
+    "english": "r",
+    "russian": "к",
+    "shift-english": "R",
+    "shift-russian": "К"
+  },
+  "KeyT": {
+    "class": "KeyT",
+    "english": "t",
+    "russian": "е",
+    "shift-english": "T",
+    "shift-russian": "Е"
+  },
+  "KeyY": {
+    "class": "KeyY",
+    "english": "y",
+    "russian": "н",
+    "shift-english": "Y",
+    "shift-russian": "Н"
+  },
+  "KeyU": {
+    "class": "KeyU",
+    "english": "u",
+    "russian": "г",
+    "shift-english": "U",
+    "shift-russian": "Г"
+  },
+  "KeyI": {
+    "class": "KeyI",
+    "english": "i",
+    "russian": "ш",
+    "shift-english": "I",
+    "shift-russian": "Ш"
+  },
+  "KeyO": {
+    "class": "KeyO",
+    "english": "o",
+    "russian": "щ",
+    "shift-english": "O",
+    "shift-russian": "Щ"
+  },
+  "KeyP": {
+    "class": "KeyP",
+    "english": "p",
+    "russian": "з",
+    "shift-english": "P",
+    "shift-russian": "З"
+  },
+  "BracketLeft": {
+    "class": "BracketLeft",
+    "english": "[",
+    "russian": "х",
+    "shift-english": "{",
+    "shift-russian": "Х"
+  },
+  "BracketRight": {
+    "class": "BracketRight",
+    "english": "]",
+    "russian": "ъ",
+    "shift-english": "}",
+    "shift-russian": "Ъ"
+  },
+  "Backslash": {
+    "class": "Backslash",
+    "english": "\\",
+    "russian": "\\",
+    "shift-english": "|",
+    "shift-russian": "/"
+  },
+  "Delete": {
+    "class": "Delete",
+    "english": "Del",
+    "russian": "Del",
+    "shift-english": "Del",
+    "shift-russian": "Del"
+  },
+  "CapsLock": {
+    "class": "CapsLock",
+    "english": "CapsLock",
+    "russian": "CapsLock",
+    "shift-english": "CapsLock",
+    "shift-russian": "CapsLock"
+  },
+  "KeyA": {
+    "class": "KeyA",
+    "english": "a",
+    "russian": "ф",
+    "shift-english": "A",
+    "shift-russian": "Ф"
+  },
+  "KeyS": {
+    "class": "KeyS",
+    "english": "s",
+    "russian": "ы",
+    "shift-english": "S",
+    "shift-russian": "Ы"
+  },
+  "KeyD": {
+    "class": "KeyD",
+    "english": "d",
+    "russian": "в",
+    "shift-english": "D",
+    "shift-russian": "В"
+  },
+  "KeyF": {
+    "class": "KeyF",
+    "english": "f",
+    "russian": "а",
+    "shift-english": "F",
+    "shift-russian": "А"
+  },
+  "KeyG": {
+    "class": "KeyG",
+    "english": "g",
+    "russian": "п",
+    "shift-english": "G",
+    "shift-russian": "П"
+  },
+  "KeyH": {
+    "class": "KeyH",
+    "english": "h",
+    "russian": "р",
+    "shift-english": "H",
+    "shift-russian": "Р"
+  },
+  "KeyJ": {
+    "class": "KeyJ",
+    "english": "j",
+    "russian": "о",
+    "shift-english": "J",
+    "shift-russian": "О"
+  },
+  "KeyK": {
+    "class": "KeyK",
+    "english": "k",
+    "russian": "л",
+    "shift-english": "K",
+    "shift-russian": "Л"
+  },
+  "KeyL": {
+    "class": "KeyL",
+    "english": "l",
+    "russian": "д",
+    "shift-english": "L",
+    "shift-russian": "Д"
+  },
+  "Semicolon": {
+    "class": "Semicolon",
+    "english": ";",
+    "russian": "ж",
+    "shift-english": ":",
+    "shift-russian": "Ж"
+  },
+  "Quote": {
+    "class": "Quote",
+    "english": "'",
+    "russian": "э",
+    "shift-english": "\"",
+    "shift-russian": "Э"
+  },
+  "Enter": {
+    "class": "Enter",
+    "english": "Enter",
+    "russian": "Enter",
+    "shift-english": "Enter",
+    "shift-russian": "Enter"
+  },
+  "ShiftLeft": {
+    "class": "ShiftLeft",
+    "english": "Shift",
+    "russian": "Shift",
+    "shift-english": "Shift",
+    "shift-russian": "Shift"
+  },
+  "KeyZ": {
+    "class": "KeyZ",
+    "english": "z",
+    "russian": "я",
+    "shift-english": "Z",
+    "shift-russian": "Я"
+  },
+  "KeyX": {
+    "class": "KeyX",
+    "english": "x",
+    "russian": "ч",
+    "shift-english": "X",
+    "shift-russian": "Ч"
+  },
+  "KeyC": {
+    "class": "KeyC",
+    "english": "c",
+    "russian": "с",
+    "shift-english": "C",
+    "shift-russian": "С"
+  },
+  "KeyV": {
+    "class": "KeyV",
+    "english": "v",
+    "russian": "м",
+    "shift-english": "V",
+    "shift-russian": "М"
+  },
+  "KeyB": {
+    "class": "KeyB",
+    "english": "b",
+    "russian": "и",
+    "shift-english": "B",
+    "shift-russian": "И"
+  },
+  "KeyN": {
+    "class": "KeyN",
+    "english": "n",
+    "russian": "т",
+    "shift-english": "N",
+    "shift-russian": "Т"
+  },
+  "KeyM": {
+    "class": "KeyM",
+    "english": "m",
+    "russian": "ь",
+    "shift-english": "M",
+    "shift-russian": "Ь"
+  },
+  "Comma": {
+    "class": "Comma",
+    "english": ",",
+    "russian": "б",
+    "shift-english": "<",
+    "shift-russian": "Б"
+  },
+  "Period": {
+    "class": "Period",
+    "english": ".",
+    "russian": "ю",
+    "shift-english": ">",
+    "shift-russian": "Ю"
+  },
+  "Slash": {
+    "class": "Slash",
+    "english": "/",
+    "russian": ".",
+    "shift-english": "?",
+    "shift-russian": ","
+  },
+  "ArrowUp": {
+    "class": "ArrowUp",
+    "english": "▲",
+    "russian": "▲",
+    "shift-english": "▲",
+    "shift-russian": "▲"
+  },
+  "ShiftRight": {
+    "class": "ShiftRight",
+    "english": "Shift",
+    "russian": "Shift",
+    "shift-english": "Shift",
+    "shift-russian": "Shift"
+  },
+  "ControlLeft": {
+    "class": "ControlLeft",
+    "english": "Ctrl",
+    "russian": "Ctrl",
+    "shift-english": "Ctrl",
+    "shift-russian": "Ctrl"
+  },
+  "MetaLeft": {
+    "class": "MetaLeft",
+    "english": "Win",
+    "russian": "Win",
+    "shift-english": "Win",
+    "shift-russian": "Win"
+  },
+  "AltLeft": {
+    "class": "AltLeft",
+    "english": "Alt",
+    "russian": "Alt",
+    "shift-english": "Alt",
+    "shift-russian": "Alt"
+  },
+  "Space": {
+    "class": "Space",
+    "english": "",
+    "russian": "",
+    "shift-english": "",
+    "shift-russian": ""
+  },
+  "AltRight": {
+    "class": "AltRight",
+    "english": "Alt",
+    "russian": "Alt",
+    "shift-english": "Alt",
+    "shift-russian": "Alt"
+  },
+  "ArrowLeft": {
+    "class": "ArrowLeft",
+    "english": "◄",
+    "russian": "◄",
+    "shift-english": "◄",
+    "shift-russian": "◄"
+  },
+  "ArrowDown": {
+    "class": "ArrowDown",
+    "english": "▼",
+    "russian": "▼",
+    "shift-english": "▼",
+    "shift-russian": "▼"
+  },
+  "ArrowRight": {
+    "class": "ArrowRight",
+    "english": "►",
+    "russian": "►",
+    "shift-english": "►",
+    "shift-russian": "►"
+  },
+  "ControlRight": {
+    "class": "ControlRight",
+    "english": "Ctrl",
+    "russian": "Ctrl",
+    "shift-english": "Ctrl",
+    "shift-russian": "Ctrl"
+  }
+}
