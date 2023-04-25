@@ -1,7 +1,9 @@
+/* import { electron } from 'webpack'; */
 import exampleJsonFile from '../keyboard.json';
 import { Key } from './script/Key';
 
-// Создаем начальные элементы
+// Выбранный язык клавиатуры
+let language = 'english';
 
 // Создаем первый ряд клавиш
 
@@ -73,6 +75,8 @@ function createFifthRow() {
   }
 }
 
+// Создаем начальные элементы
+
 function createTitle(element) {
   const title = document.createElement('h1');
   title.className = 'title';
@@ -109,7 +113,7 @@ function createSystemName(element) {
 function createLanguageChange(element) {
   const languageChange = document.createElement('p');
   languageChange.className = 'language-change';
-  languageChange.innerText = 'Для переключения языка комбинация: левыe ctrl + alt';
+  languageChange.innerText = 'Для переключения языка комбинация: левыe ctrl + shift';
   element.append(languageChange);
 }
 
@@ -124,28 +128,94 @@ function createContainer() {
   createLanguageChange(container);
 }
 
-function buildKeys() {
+function buildKeys(type) {
   let i = 0;
   for (let prop in exampleJsonFile) {
     let item = document.querySelectorAll('.key')[i];
     i += 1;
     let keyObject = new Key(exampleJsonFile[prop]);
+    let selector = item.className;
     item.className = `${item.className} ${keyObject.item.class}`;
-    item.innerText = `${keyObject.item[language]}`;
+    item.innerText = `${keyObject.item[type]}`;
   }
+}
+
+function chabgeKeySimbol(type) {
+  let item = document.querySelectorAll('.key');
+  item.forEach(element => {
+    let keyObject = new Key(exampleJsonFile[element.classList[1]]);
+    element.innerText = `${keyObject.item[type]}`;
+  });
+}
+
+function removeActivSelectorOnKey() {
+  this.classList.remove('active');
+}
+
+function addActivSelectorOnKey() {
+  this.classList.add('active');
+  this.addEventListener('mouseup', removeActivSelectorOnKey);
+  let textArea = document.querySelector('.textArea');
+  if (this.classList.contains('Backspace')) {
+    if (textArea.value !== '') {
+      textArea.value = `${textArea.value.slice(0, -1)}`;
+    }
+  } else if (this.classList.contains('CapsLock')) {
+    if (language === 'english') {
+      language = 'shift-english';
+      chabgeKeySimbol(language);
+    } else if (language === 'shift-english') {
+      language = 'english';
+      chabgeKeySimbol(language);
+    }
+  } else if (this.classList.contains('Space')) {
+    textArea.value = `${textArea.value} `;
+  } else if (this.classList.contains('Tab')) {
+    textArea.value = `${textArea.value}    `;
+  } else {
+    textArea.value = `${textArea.value}${this.innerText}`;
+  }
+}
+
+function addPressHandlerOnKeys() {
+  let key = document.querySelectorAll('.key');
+  key.forEach(element => {
+    element.addEventListener('mousedown', addActivSelectorOnKey);
+  });
 }
 
 window.onload = function () {
   createContainer();
 
-  buildKeys();
+  buildKeys(language);
+
+  addPressHandlerOnKeys();
+
+  document.addEventListener('keydown', (event) => {
+    let key = document.querySelector(`.${event.code}`);
+    let textArea = document.querySelector('.textArea');
+    if (event.code === 'CapsLock') {
+      if (key.classList.contains('active')) {
+        language = language.split('-')[1];
+        chabgeKeySimbol(language);
+        key.classList.remove('active');
+      } else {
+        key.classList.add('active');
+        language = `shift-${language}`;
+        chabgeKeySimbol(language);
+      }
+    } else if (event.code === 'Tab') {
+      textArea.focus();
+      textArea.value = `${textArea.value}    `;
+    } else {
+      key.classList.add('active');
+    }
+    textArea.focus();
+  });
+  document.addEventListener('keyup', (event) => {
+    if (event.code !== 'CapsLock') {
+      let key = document.querySelector(`.${event.code}`);
+      key.classList.remove('active');
+    }
+  });
 };
-
-// Выбранный язык клавиатуры
-const language = 'english';
-
-function keyPress(e) {
-  console.log(e.code);
-}
-
-document.addEventListener('keypress', keyPress);
