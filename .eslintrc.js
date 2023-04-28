@@ -11,5 +11,8 @@ module.exports = {
     sourceType: 'module'
   },
   rules: {
+    "no-restricted-syntax": 'off',
+    "guard-for-in": 'off',
+    "no-param-reassign": 'off'
   }
 };

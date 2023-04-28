@@ -5,6 +5,10 @@ import { Key } from './script/Key';
 // Выбранный язык клавиатуры
 let language = 'english';
 
+let shiftPress = 0;
+
+let indicatorForChangeLanguage = 0;
+
 // Создаем первый ряд клавиш
 
 function createFirstRow() {
@@ -134,7 +138,6 @@ function buildKeys(type) {
     let item = document.querySelectorAll('.key')[i];
     i += 1;
     let keyObject = new Key(exampleJsonFile[prop]);
-    let selector = item.className;
     item.className = `${item.className} ${keyObject.item.class}`;
     item.innerText = `${keyObject.item[type]}`;
   }
@@ -148,7 +151,48 @@ function changeKeySimbol(type) {
   });
 }
 
+function pressCapsLock() {
+  if (language === 'english') {
+    language = 'shift-english';
+    changeKeySimbol(language);
+  } else if (language === 'shift-english') {
+    language = 'english';
+    changeKeySimbol(language);
+  }
+}
+
+function pressCtrlAlt() {
+  if (language === 'english') {
+    language = 'russian';
+    changeKeySimbol(language);
+  } else if (language === 'russian') {
+    language = 'english';
+    changeKeySimbol(language);
+  } else if (language === 'shift-english') {
+    language = 'shift-russian';
+    changeKeySimbol(language);
+  } else if (language === 'shift-russian') {
+    language = 'shift-english';
+    changeKeySimbol(language);
+  }
+}
+
 function removeActivSelectorOnKey() {
+  if (this.classList.contains('ShiftLeft') || this.classList.contains('ShiftRight')) {
+    if (language === 'english') {
+      language = 'shift-english';
+      changeKeySimbol(language);
+    } else if (language === 'russian') {
+      language = 'shift-russian';
+      changeKeySimbol(language);
+    } else if (language === 'shift-english') {
+      language = 'english';
+      changeKeySimbol(language);
+    } else if (language === 'shift-russian') {
+      language = 'russian';
+      changeKeySimbol(language);
+    }
+  }
   if (!this.classList.contains('CapsLock')) {
     this.classList.remove('active');
   }
@@ -157,13 +201,7 @@ function removeActivSelectorOnKey() {
 function addActivSelectorOnKey() {
   if (this.classList.contains('CapsLock') && this.classList.contains('active')) {
     this.classList.remove('active');
-    if (language === 'english') {
-      language = 'shift-english';
-      changeKeySimbol(language);
-    } else if (language === 'shift-english') {
-      language = 'english';
-      changeKeySimbol(language);
-    }
+    pressCapsLock();
   } else {
     this.classList.add('active');
     this.addEventListener('mouseup', removeActivSelectorOnKey);
@@ -173,17 +211,27 @@ function addActivSelectorOnKey() {
         textArea.value = `${textArea.value.slice(0, -1)}`;
       }
     } else if (this.classList.contains('CapsLock')) {
-      if (language === 'english') {
-        language = 'shift-english';
-        changeKeySimbol(language);
-      } else if (language === 'shift-english') {
-        language = 'english';
-        changeKeySimbol(language);
-      }
+      pressCapsLock();
     } else if (this.classList.contains('Space')) {
       textArea.value = `${textArea.value} `;
     } else if (this.classList.contains('Tab')) {
       textArea.value = `${textArea.value}    `;
+    } else if (this.classList.contains('ShiftLeft') || this.classList.contains('ShiftRight')) {
+      if (language === 'english') {
+        language = 'shift-english';
+        changeKeySimbol(language);
+      } else if (language === 'russian') {
+        language = 'shift-russian';
+        changeKeySimbol(language);
+      } else if (language === 'shift-english') {
+        language = 'english';
+        changeKeySimbol(language);
+      } else if (language === 'shift-russian') {
+        language = 'russian';
+        changeKeySimbol(language);
+      }
+    } else if (this.classList.contains('Enter')) {
+      textArea.value = `${textArea.value}\n`;
     } else {
       textArea.value = `${textArea.value}${this.innerText}`;
     }
@@ -197,7 +245,7 @@ function addPressHandlerOnKeys() {
   });
 }
 
-window.onload = function () {
+window.onload = function onload() {
   createContainer();
 
   buildKeys(language);
@@ -206,20 +254,29 @@ window.onload = function () {
 
   let textArea = document.querySelector('.textArea');
 
-  let indicatorForChangeLanguage = 0;
-
   document.addEventListener('keydown', (event) => {
     let key = document.querySelector(`.${event.code}`);
-    if (event.code === 'CapsLock') {
+    if (event.code === 'CapsLock' && shiftPress !== 1) {
       if (key.classList.contains('active')) {
-        language = language.split('-')[1];
+        if (language === 'russian' || language === 'shift-russian') {
+          language = 'russian';
+        } else if (language === 'english' || language === 'shift-english') {
+          language = 'english';
+        }
         changeKeySimbol(language);
         key.classList.remove('active');
       } else {
+        if (language === 'russian' || language === 'shift-russian') {
+          language = 'shift-russian';
+        } else if (language === 'english' || language === 'shift-english') {
+          language = 'shift-english';
+        }
         key.classList.add('active');
-        language = `shift-${language}`;
         changeKeySimbol(language);
       }
+    } else if (event.code === 'Enter') {
+      key.classList.add('active');
+      textArea.value = `${textArea.value}\n`;
     } else if (event.code === 'Tab') {
       textArea.focus();
       event.preventDefault();
@@ -234,8 +291,8 @@ window.onload = function () {
         textArea.value = `${textArea.value}${key.innerText}`;
       }
     } else if (event.code === 'Backspace') {
+      textArea.focus();
       key.classList.add('active');
-      textArea.value = `${textArea.value.slice(0, -1)}`;
     } else if (event.code === 'ControlLeft' || event.code === 'AltLeft' || event.code === 'ControlRight' || event.code === 'AltRight') {
       event.preventDefault();
       key.classList.add('active');
@@ -244,41 +301,51 @@ window.onload = function () {
       let altLeft = document.querySelector('.AltLeft');
       let altRight = document.querySelector('.AltRight');
       if (event.code[0] === 'C' && indicatorForChangeLanguage === 1 && (altLeft.classList.contains('active') || altRight.classList.contains('active'))) {
-        if (language === 'english') {
-          language = 'russian';
-          changeKeySimbol(language);
-        } else if (language === 'russian') {
-          language = 'english';
-          changeKeySimbol(language);
-        } else if (language === 'shift-english') {
-          language = 'shift-russian';
-          changeKeySimbol(language);
-        } else if (language === 'shift-russian') {
-          language = 'shift-english';
-          changeKeySimbol(language);
-        }
+        pressCtrlAlt();
       } else if (event.code[0] === 'A' && indicatorForChangeLanguage === 1 && (controlLeft.classList.contains('active') || controlRight.classList.contains('active'))) {
-        if (language === 'english') {
-          language = 'russian';
-          changeKeySimbol(language);
-        } else if (language === 'russian') {
-          language = 'english';
-          changeKeySimbol(language);
-        } else if (language === 'shift-english') {
-          language = 'shift-russian';
-          changeKeySimbol(language);
-        } else if (language === 'shift-russian') {
-          language = 'shift-english';
-          changeKeySimbol(language);
-        }
+        pressCtrlAlt();
       }
       indicatorForChangeLanguage = 1;
+    } else if ((event.code === 'ShiftLeft' || event.code === 'ShiftRight') && shiftPress !== 1) {
+      shiftPress = 1;
+      event.preventDefault();
+      key.classList.add('active');
+      if (language === 'english') {
+        language = 'shift-english';
+        changeKeySimbol(language);
+      } else if (language === 'russian') {
+        language = 'shift-russian';
+        changeKeySimbol(language);
+      } else if (language === 'shift-english') {
+        language = 'english';
+        changeKeySimbol(language);
+      } else if (language === 'shift-russian') {
+        language = 'russian';
+        changeKeySimbol(language);
+      }
     } else {
       key.classList.add('active');
     }
   });
   document.addEventListener('keyup', (event) => {
-    if (event.code !== 'CapsLock') {
+    if (event.code === 'ShiftLeft' || event.code === 'ShiftRight') {
+      shiftPress = 0;
+      let key = document.querySelector(`.${event.code}`);
+      key.classList.remove('active');
+      if (language === 'shift-english') {
+        language = 'english';
+        changeKeySimbol(language);
+      } else if (language === 'shift-russian') {
+        language = 'russian';
+        changeKeySimbol(language);
+      } else if (language === 'english') {
+        language = 'shift-english';
+        changeKeySimbol(language);
+      } else if (language === 'russian') {
+        language = 'shift-russian';
+        changeKeySimbol(language);
+      }
+    } else if (event.code !== 'CapsLock') {
       let key = document.querySelector(`.${event.code}`);
       key.classList.remove('active');
     }
