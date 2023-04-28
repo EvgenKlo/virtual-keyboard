@@ -206,9 +206,10 @@ window.onload = function () {
 
   let textArea = document.querySelector('.textArea');
 
+  let indicatorForChangeLanguage = 0;
+
   document.addEventListener('keydown', (event) => {
     let key = document.querySelector(`.${event.code}`);
-    //let textArea = document.querySelector('.textArea');
     if (event.code === 'CapsLock') {
       if (key.classList.contains('active')) {
         language = language.split('-')[1];
@@ -227,14 +228,62 @@ window.onload = function () {
     } else if (event.code !== 'Tab' && event.code !== 'CapsLock' && event.code !== 'ShiftLeft' && event.code !== 'ControlLeft' && event.code !== 'MetaLeft' && event.code !== 'AltLeft' && event.code !== 'AltRight' && event.code !== 'ControlRight' && event.code !== 'ShiftRight' && event.code !== 'Enter' && event.code !== 'Delete' && event.code !== 'Backspace') {
       key.classList.add('active');
       textArea.blur();
-      textArea.value = `${textArea.value}${key.innerText}`;
+      if (event.code === 'Space') {
+        textArea.value = `${textArea.value} `;
+      } else {
+        textArea.value = `${textArea.value}${key.innerText}`;
+      }
+    } else if (event.code === 'Backspace') {
+      key.classList.add('active');
+      textArea.value = `${textArea.value.slice(0, -1)}`;
+    } else if (event.code === 'ShiftLeft' || event.code === 'AltLeft' || event.code === 'ShiftRight' || event.code === 'AltRight') {
+      event.preventDefault();
+      key.classList.add('active');
+      let shiftLeft = document.querySelector('.ShiftLeft');
+      let shiftRight = document.querySelector('.ShiftRight');
+      let altLeft = document.querySelector('.AltLeft');
+      let altRight = document.querySelector('.AltRight');
+      if (event.code[0] === 'S' && indicatorForChangeLanguage === 1 && (altLeft.classList.contains('active') || altRight.classList.contains('active'))) {
+        if (language === 'english') {
+          language = 'russian';
+          changeKeySimbol(language);
+        } else if (language === 'russian') {
+          language = 'english';
+          changeKeySimbol(language);
+        } else if (language === 'shift-english') {
+          language = 'shift-russian';
+          changeKeySimbol(language);
+        } else if (language === 'shift-russian') {
+          language = 'shift-english';
+          changeKeySimbol(language);
+        }
+      } else if (event.code[0] === 'A' && indicatorForChangeLanguage === 1 && (shiftLeft.classList.contains('active') || shiftRight.classList.contains('active'))) {
+        if (language === 'english') {
+          language = 'russian';
+          changeKeySimbol(language);
+        } else if (language === 'russian') {
+          language = 'english';
+          changeKeySimbol(language);
+        } else if (language === 'shift-english') {
+          language = 'shift-russian';
+          changeKeySimbol(language);
+        } else if (language === 'shift-russian') {
+          language = 'shift-english';
+          changeKeySimbol(language);
+        }
+      }
+      indicatorForChangeLanguage = 1;
+    } else {
+      key.classList.add('active');
     }
-    //textArea.focus();
   });
   document.addEventListener('keyup', (event) => {
     if (event.code !== 'CapsLock') {
       let key = document.querySelector(`.${event.code}`);
       key.classList.remove('active');
     }
+    indicatorForChangeLanguage = 0;
   });
 };
+
+// Переключение языка

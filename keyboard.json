@@ -407,10 +407,10 @@
   },
   "Space": {
     "class": "Space",
-    "english": "",
-    "russian": "",
-    "shift-english": "",
-    "shift-russian": ""
+    "english": " ",
+    "russian": " ",
+    "shift-english": " ",
+    "shift-russian": " "
   },
   "AltRight": {
     "class": "AltRight",
