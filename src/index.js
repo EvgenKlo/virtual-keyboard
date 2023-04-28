@@ -117,7 +117,7 @@ function createSystemName(element) {
 function createLanguageChange(element) {
   const languageChange = document.createElement('p');
   languageChange.className = 'language-change';
-  languageChange.innerText = 'Для переключения языка комбинация: левыe ctrl + alt';
+  languageChange.innerText = 'Для переключения языка комбинация: ctrl + alt';
   element.append(languageChange);
 }
 
@@ -232,6 +232,10 @@ function addActivSelectorOnKey() {
       }
     } else if (this.classList.contains('Enter')) {
       textArea.value = `${textArea.value}\n`;
+    } else if (this.classList.contains('MetaLeft')) {
+      console.log('Hello RS');
+    } else if (this.classList.contains('Delete')) {
+      console.log('go go go');
     } else {
       textArea.value = `${textArea.value}${this.innerText}`;
     }
@@ -351,4 +355,25 @@ window.onload = function onload() {
     }
     indicatorForChangeLanguage = 0;
   });
+
+  textArea.addEventListener('focus', getCaretPos);
+
+  function getCaretPos() {
+    var obj = document.querySelector('.textArea');
+    obj.focus();
+    if (document.selection) { // IE
+      console.log
+      var sel = document.selection.createRange();
+      var clone = sel.duplicate();
+      sel.collapse(true);
+      clone.moveToElementText(obj);
+      clone.setEndPoint('EndToEnd', sel);
+      console.log(clone.text.length);
+      return clone.text.length;
+    } else if (obj.selectionStart!==false) {
+      console.log(obj.selectionStart);
+      return obj.selectionStart;
+     } // Gecko
+     else return 0;
+    }
 };
