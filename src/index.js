@@ -113,7 +113,7 @@ function createSystemName(element) {
 function createLanguageChange(element) {
   const languageChange = document.createElement('p');
   languageChange.className = 'language-change';
-  languageChange.innerText = 'Для переключения языка комбинация: левыe ctrl + shift';
+  languageChange.innerText = 'Для переключения языка комбинация: левыe ctrl + alt';
   element.append(languageChange);
 }
 
@@ -236,14 +236,14 @@ window.onload = function () {
     } else if (event.code === 'Backspace') {
       key.classList.add('active');
       textArea.value = `${textArea.value.slice(0, -1)}`;
-    } else if (event.code === 'ShiftLeft' || event.code === 'AltLeft' || event.code === 'ShiftRight' || event.code === 'AltRight') {
+    } else if (event.code === 'ControlLeft' || event.code === 'AltLeft' || event.code === 'ControlRight' || event.code === 'AltRight') {
       event.preventDefault();
       key.classList.add('active');
-      let shiftLeft = document.querySelector('.ShiftLeft');
-      let shiftRight = document.querySelector('.ShiftRight');
+      let controlLeft = document.querySelector('.ControlLeft');
+      let controlRight = document.querySelector('.ControlRight');
       let altLeft = document.querySelector('.AltLeft');
       let altRight = document.querySelector('.AltRight');
-      if (event.code[0] === 'S' && indicatorForChangeLanguage === 1 && (altLeft.classList.contains('active') || altRight.classList.contains('active'))) {
+      if (event.code[0] === 'C' && indicatorForChangeLanguage === 1 && (altLeft.classList.contains('active') || altRight.classList.contains('active'))) {
         if (language === 'english') {
           language = 'russian';
           changeKeySimbol(language);
@@ -257,7 +257,7 @@ window.onload = function () {
           language = 'shift-english';
           changeKeySimbol(language);
         }
-      } else if (event.code[0] === 'A' && indicatorForChangeLanguage === 1 && (shiftLeft.classList.contains('active') || shiftRight.classList.contains('active'))) {
+      } else if (event.code[0] === 'A' && indicatorForChangeLanguage === 1 && (controlLeft.classList.contains('active') || controlRight.classList.contains('active'))) {
         if (language === 'english') {
           language = 'russian';
           changeKeySimbol(language);
@@ -285,5 +285,3 @@ window.onload = function () {
     indicatorForChangeLanguage = 0;
   });
 };
-
-// Переключение языка
