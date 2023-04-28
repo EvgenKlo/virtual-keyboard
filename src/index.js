@@ -149,18 +149,14 @@ function chabgeKeySimbol(type) {
 }
 
 function removeActivSelectorOnKey() {
-  this.classList.remove('active');
+  if (!this.classList.contains('CapsLock')) {
+    this.classList.remove('active');
+  }
 }
 
 function addActivSelectorOnKey() {
-  this.classList.add('active');
-  this.addEventListener('mouseup', removeActivSelectorOnKey);
-  let textArea = document.querySelector('.textArea');
-  if (this.classList.contains('Backspace')) {
-    if (textArea.value !== '') {
-      textArea.value = `${textArea.value.slice(0, -1)}`;
-    }
-  } else if (this.classList.contains('CapsLock')) {
+  if (this.classList.contains('CapsLock') && this.classList.contains('active')) {
+    this.classList.remove('active');
     if (language === 'english') {
       language = 'shift-english';
       chabgeKeySimbol(language);
@@ -168,12 +164,29 @@ function addActivSelectorOnKey() {
       language = 'english';
       chabgeKeySimbol(language);
     }
-  } else if (this.classList.contains('Space')) {
-    textArea.value = `${textArea.value} `;
-  } else if (this.classList.contains('Tab')) {
-    textArea.value = `${textArea.value}    `;
   } else {
-    textArea.value = `${textArea.value}${this.innerText}`;
+    this.classList.add('active');
+    this.addEventListener('mouseup', removeActivSelectorOnKey);
+    let textArea = document.querySelector('.textArea');
+    if (this.classList.contains('Backspace')) {
+      if (textArea.value !== '') {
+        textArea.value = `${textArea.value.slice(0, -1)}`;
+      }
+    } else if (this.classList.contains('CapsLock')) {
+      if (language === 'english') {
+        language = 'shift-english';
+        chabgeKeySimbol(language);
+      } else if (language === 'shift-english') {
+        language = 'english';
+        chabgeKeySimbol(language);
+      }
+    } else if (this.classList.contains('Space')) {
+      textArea.value = `${textArea.value} `;
+    } else if (this.classList.contains('Tab')) {
+      textArea.value = `${textArea.value}    `;
+    } else {
+      textArea.value = `${textArea.value}${this.innerText}`;
+    }
   }
 }
 
