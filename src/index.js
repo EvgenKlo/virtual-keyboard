@@ -140,7 +140,7 @@ function buildKeys(type) {
   }
 }
 
-function chabgeKeySimbol(type) {
+function changeKeySimbol(type) {
   let item = document.querySelectorAll('.key');
   item.forEach(element => {
     let keyObject = new Key(exampleJsonFile[element.classList[1]]);
@@ -159,10 +159,10 @@ function addActivSelectorOnKey() {
     this.classList.remove('active');
     if (language === 'english') {
       language = 'shift-english';
-      chabgeKeySimbol(language);
+      changeKeySimbol(language);
     } else if (language === 'shift-english') {
       language = 'english';
-      chabgeKeySimbol(language);
+      changeKeySimbol(language);
     }
   } else {
     this.classList.add('active');
@@ -175,10 +175,10 @@ function addActivSelectorOnKey() {
     } else if (this.classList.contains('CapsLock')) {
       if (language === 'english') {
         language = 'shift-english';
-        chabgeKeySimbol(language);
+        changeKeySimbol(language);
       } else if (language === 'shift-english') {
         language = 'english';
-        chabgeKeySimbol(language);
+        changeKeySimbol(language);
       }
     } else if (this.classList.contains('Space')) {
       textArea.value = `${textArea.value} `;
@@ -204,26 +204,32 @@ window.onload = function () {
 
   addPressHandlerOnKeys();
 
+  let textArea = document.querySelector('.textArea');
+
   document.addEventListener('keydown', (event) => {
     let key = document.querySelector(`.${event.code}`);
-    let textArea = document.querySelector('.textArea');
+    //let textArea = document.querySelector('.textArea');
     if (event.code === 'CapsLock') {
       if (key.classList.contains('active')) {
         language = language.split('-')[1];
-        chabgeKeySimbol(language);
+        changeKeySimbol(language);
         key.classList.remove('active');
       } else {
         key.classList.add('active');
         language = `shift-${language}`;
-        chabgeKeySimbol(language);
+        changeKeySimbol(language);
       }
     } else if (event.code === 'Tab') {
       textArea.focus();
-      textArea.value = `${textArea.value}    `;
-    } else {
+      event.preventDefault();
       key.classList.add('active');
+      textArea.value = `${textArea.value}    `;
+    } else if (event.code !== 'Tab' && event.code !== 'CapsLock' && event.code !== 'ShiftLeft' && event.code !== 'ControlLeft' && event.code !== 'MetaLeft' && event.code !== 'AltLeft' && event.code !== 'AltRight' && event.code !== 'ControlRight' && event.code !== 'ShiftRight' && event.code !== 'Enter' && event.code !== 'Delete' && event.code !== 'Backspace') {
+      key.classList.add('active');
+      textArea.blur();
+      textArea.value = `${textArea.value}${key.innerText}`;
     }
-    textArea.focus();
+    //textArea.focus();
   });
   document.addEventListener('keyup', (event) => {
     if (event.code !== 'CapsLock') {
