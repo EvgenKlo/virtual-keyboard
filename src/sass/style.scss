@@ -23,6 +23,8 @@ p {
   width: 800px;
   padding: 10px;
   border-radius: 5px;
+  outline: none;
+  font-size: 20px;
 }
 
 .keyboard {
@@ -49,6 +51,7 @@ p {
   cursor: pointer;
   background: rgb(180, 250, 255);
   transition: .3s;
+  font-size: 20px;
   @media (hover :hover){
     &:hover {
       background: green;

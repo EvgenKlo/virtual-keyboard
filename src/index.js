@@ -9,6 +9,22 @@ let shiftPress = 0;
 
 let indicatorForChangeLanguage = 0;
 
+let cursorPosition = 0;
+
+// Сохранение выбранного языка
+
+function setLocalStorage() {
+  localStorage.setItem('language', language);
+}
+window.addEventListener('beforeunload', setLocalStorage);
+
+function getLocalStorage() {
+  if (localStorage.getItem('language')) {
+    language = localStorage.getItem('language');
+  }
+}
+window.addEventListener('load', getLocalStorage);
+
 // Создаем первый ряд клавиш
 
 function createFirstRow() {
@@ -132,6 +148,8 @@ function createContainer() {
   createLanguageChange(container);
 }
 
+// Создаем кнопки
+
 function buildKeys(type) {
   let i = 0;
   for (let prop in exampleJsonFile) {
@@ -152,13 +170,21 @@ function changeKeySimbol(type) {
 }
 
 function pressCapsLock() {
-  if (language === 'english') {
-    language = 'shift-english';
-    changeKeySimbol(language);
-  } else if (language === 'shift-english') {
-    language = 'english';
-    changeKeySimbol(language);
+  let caps = document.querySelector('.CapsLock');
+  if (caps.classList.contains('active')) {
+    if (language === 'english' || language === 'shift-english') {
+      language = 'shift-english';
+    } else {
+      language = 'shift-russian';
+    }
+  } else if (!caps.classList.contains('active')) {
+    if (language === 'english' || language === 'shift-english') {
+      language = 'english';
+    } else {
+      language = 'russian';
+    }
   }
+  changeKeySimbol(language);
 }
 
 function pressCtrlAlt() {
@@ -178,6 +204,7 @@ function pressCtrlAlt() {
 }
 
 function removeActivSelectorOnKey() {
+  let textArea = document.querySelector('.textArea');
   if (this.classList.contains('ShiftLeft') || this.classList.contains('ShiftRight')) {
     if (language === 'english') {
       language = 'shift-english';
@@ -196,6 +223,13 @@ function removeActivSelectorOnKey() {
   if (!this.classList.contains('CapsLock')) {
     this.classList.remove('active');
   }
+  if (this.classList.contains('Enter') || this.classList.contains('Delete') || this.classList.contains('Tab') || this.classList.contains('Backspace')) {
+    textArea.focus();
+  }
+  if (cursorPosition !== textArea.value.length || this.classList.contains('Space')) {
+    textArea.focus();
+    textArea.setSelectionRange(cursorPosition, cursorPosition);
+  }
 }
 
 function addActivSelectorOnKey() {
@@ -207,15 +241,34 @@ function addActivSelectorOnKey() {
     this.addEventListener('mouseup', removeActivSelectorOnKey);
     let textArea = document.querySelector('.textArea');
     if (this.classList.contains('Backspace')) {
-      if (textArea.value !== '') {
-        textArea.value = `${textArea.value.slice(0, -1)}`;
+      if (textArea.value !== '' && cursorPosition !== 0) {
+        if (cursorPosition === textArea.value.length) {
+          textArea.value = `${textArea.value.slice(0, -1)}`;
+          cursorPosition -= 1;
+        } else {
+          let str = textArea.value.split('');
+          str.splice(cursorPosition - 1, 1);
+          str = str.join('');
+          textArea.value = str;
+          textArea.blur();
+          cursorPosition -= 1;
+        }
       }
     } else if (this.classList.contains('CapsLock')) {
       pressCapsLock();
     } else if (this.classList.contains('Space')) {
-      textArea.value = `${textArea.value} `;
+      let str = textArea.value.split('');
+      str.splice(cursorPosition, 0, ' ');
+      str = str.join('');
+      textArea.value = str;
+      cursorPosition += 1;
     } else if (this.classList.contains('Tab')) {
-      textArea.value = `${textArea.value}    `;
+      let str = textArea.value.split('');
+      str.splice(cursorPosition, 0, '    ');
+      str = str.join('');
+      textArea.value = str;
+      textArea.blur();
+      cursorPosition += 4;
     } else if (this.classList.contains('ShiftLeft') || this.classList.contains('ShiftRight')) {
       if (language === 'english') {
         language = 'shift-english';
@@ -231,13 +284,45 @@ function addActivSelectorOnKey() {
         changeKeySimbol(language);
       }
     } else if (this.classList.contains('Enter')) {
-      textArea.value = `${textArea.value}\n`;
+      textArea.focus();
+      if (cursorPosition === textArea.value.length) {
+        textArea.value = `${textArea.value}\n`;
+        cursorPosition = textArea.selectionStart;
+        textArea.focus();
+      } else if (cursorPosition === 0) {
+        textArea.value = `\n${textArea.value}`;
+        cursorPosition += 1;
+        textArea.focus();
+        textArea.setSelectionRange(cursorPosition, cursorPosition);
+      } else {
+        let str = textArea.value.split('');
+        str.splice(cursorPosition, 0, '\n');
+        str = str.join('');
+        textArea.value = str;
+        cursorPosition += 1;
+        textArea.focus();
+        textArea.setSelectionRange(cursorPosition, cursorPosition);
+      }
     } else if (this.classList.contains('MetaLeft')) {
-      console.log('Hello RS');
+      textArea.blur();
     } else if (this.classList.contains('Delete')) {
-      console.log('go go go');
+      if (textArea.value !== '' && cursorPosition !== textArea.value.length) {
+        let str = textArea.value.split('');
+        str.splice(cursorPosition, 1);
+        str = str.join('');
+        textArea.value = str;
+        textArea.selectionStart = cursorPosition;
+        textArea.setSelectionRange(cursorPosition, cursorPosition);
+      }
+    } else if (this.classList.contains('ControlLeft') || this.classList.contains('AltLeft') || this.classList.contains('AltRight') || this.classList.contains('ControlRight')) {
+      textArea.blur();
     } else {
-      textArea.value = `${textArea.value}${this.innerText}`;
+      let str = textArea.value.split('');
+      str.splice(cursorPosition, 0, `${this.innerText}`);
+      str = str.join('');
+      textArea.value = str;
+      textArea.blur();
+      cursorPosition += 1;
     }
   }
 }
@@ -259,6 +344,7 @@ window.onload = function onload() {
   let textArea = document.querySelector('.textArea');
 
   document.addEventListener('keydown', (event) => {
+    event.preventDefault();
     let key = document.querySelector(`.${event.code}`);
     if (event.code === 'CapsLock' && shiftPress !== 1) {
       if (key.classList.contains('active')) {
@@ -279,24 +365,84 @@ window.onload = function onload() {
         changeKeySimbol(language);
       }
     } else if (event.code === 'Enter') {
+      event.preventDefault();
       key.classList.add('active');
-      textArea.value = `${textArea.value}\n`;
+      if (cursorPosition === textArea.value.length) {
+        textArea.value = `${textArea.value}\n`;
+        cursorPosition = textArea.selectionStart;
+        textArea.focus();
+      } else if (cursorPosition === 0) {
+        textArea.value = `\n${textArea.value}`;
+        cursorPosition += 1;
+        textArea.setSelectionRange(cursorPosition, cursorPosition);
+      } else {
+        let str = textArea.value.split('');
+        str.splice(cursorPosition, 0, '\n');
+        str = str.join('');
+        textArea.value = str;
+        cursorPosition += 1;
+        textArea.setSelectionRange(cursorPosition, cursorPosition);
+      }
     } else if (event.code === 'Tab') {
       textArea.focus();
       event.preventDefault();
       key.classList.add('active');
-      textArea.value = `${textArea.value}    `;
+      let str = textArea.value.split('');
+      str.splice(cursorPosition, 0, '    ');
+      str = str.join('');
+      textArea.value = str;
+      cursorPosition += 4;
+      textArea.setSelectionRange(cursorPosition, cursorPosition);
     } else if (event.code !== 'Tab' && event.code !== 'CapsLock' && event.code !== 'ShiftLeft' && event.code !== 'ControlLeft' && event.code !== 'MetaLeft' && event.code !== 'AltLeft' && event.code !== 'AltRight' && event.code !== 'ControlRight' && event.code !== 'ShiftRight' && event.code !== 'Enter' && event.code !== 'Delete' && event.code !== 'Backspace') {
       key.classList.add('active');
       textArea.blur();
       if (event.code === 'Space') {
-        textArea.value = `${textArea.value} `;
+        let str = textArea.value.split('');
+        str.splice(cursorPosition, 0, ' ');
+        str = str.join('');
+        textArea.value = str;
+        cursorPosition += 1;
+        textArea.focus();
+        textArea.setSelectionRange(cursorPosition, cursorPosition);
       } else {
-        textArea.value = `${textArea.value}${key.innerText}`;
+        let str = textArea.value.split('');
+        str.splice(cursorPosition, 0, `${key.innerText}`);
+        str = str.join('');
+        textArea.value = str;
+        textArea.blur();
+        cursorPosition += 1;
+        if (cursorPosition !== textArea.value.length) {
+          textArea.focus();
+          textArea.setSelectionRange(cursorPosition, cursorPosition);
+        }
       }
     } else if (event.code === 'Backspace') {
-      textArea.focus();
+      event.preventDefault();
       key.classList.add('active');
+      if (textArea.value !== '' && cursorPosition !== 0) {
+        if (cursorPosition === textArea.value.length) {
+          textArea.value = `${textArea.value.slice(0, -1)}`;
+          cursorPosition -= 1;
+        } else {
+          let str = textArea.value.split('');
+          str.splice(cursorPosition - 1, 1);
+          str = str.join('');
+          textArea.value = str;
+          cursorPosition -= 1;
+          textArea.setSelectionRange(cursorPosition, cursorPosition);
+        }
+      }
+    } else if (event.code === 'Delete') {
+      event.preventDefault();
+      key.classList.add('active');
+      if (textArea.value !== '' && cursorPosition !== textArea.value.length) {
+        let str = textArea.value.split('');
+        str.splice(cursorPosition, 1);
+        str = str.join('');
+        textArea.value = str;
+        textArea.selectionStart = cursorPosition;
+        textArea.setSelectionRange(cursorPosition, cursorPosition);
+      }
     } else if (event.code === 'ControlLeft' || event.code === 'AltLeft' || event.code === 'ControlRight' || event.code === 'AltRight') {
       event.preventDefault();
       key.classList.add('active');
@@ -356,24 +502,7 @@ window.onload = function onload() {
     indicatorForChangeLanguage = 0;
   });
 
-  textArea.addEventListener('focus', getCaretPos);
-
-  function getCaretPos() {
-    var obj = document.querySelector('.textArea');
-    obj.focus();
-    if (document.selection) { // IE
-      console.log
-      var sel = document.selection.createRange();
-      var clone = sel.duplicate();
-      sel.collapse(true);
-      clone.moveToElementText(obj);
-      clone.setEndPoint('EndToEnd', sel);
-      console.log(clone.text.length);
-      return clone.text.length;
-    } else if (obj.selectionStart!==false) {
-      console.log(obj.selectionStart);
-      return obj.selectionStart;
-     } // Gecko
-     else return 0;
-    }
+  textArea.addEventListener('click', () => {
+    cursorPosition = textArea.selectionStart;
+  });
 };
