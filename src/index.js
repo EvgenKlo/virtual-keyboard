@@ -1,5 +1,5 @@
 /* import { electron } from 'webpack'; */
-import exampleJsonFile from '../keyboard.json';
+import exampleJsonFile from './keyboard.json';
 import { Key } from './script/Key';
 
 // Выбранный язык клавиатуры
